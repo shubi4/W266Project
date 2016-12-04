@@ -27,6 +27,8 @@ from inception.flowers_data import FlowersData
 
 tf.app.flags.DEFINE_string('data_dir', '/w266/project/mscoco/debug/',
                            'data directory')
+tf.app.flags.DEFINE_string('output_dir', '/w266/project/mscoco/debug/image_vectors/',
+                           'data directory')
 tf.app.flags.DEFINE_string('subset', 'validation', 'train or validation')
 tf.app.flags.DEFINE_string('eval_dir', '/w266/project/mscoco/debug/eval',
                            'Eval directory')
