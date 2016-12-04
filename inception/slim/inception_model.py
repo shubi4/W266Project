@@ -326,8 +326,6 @@ def inception_v3(inputs,
           net = ops.dropout(net, dropout_keep_prob, scope='dropout')
           net = ops.flatten(net, scope='flatten')
           # 2048
-          #Subha: add a final connected layer
-          net = ops.fc(net, 200, activation=None)
           #Subha - don't want the final logits layer
           '''
           logits = ops.fc(net, num_classes, activation=None, scope='logits',
