@@ -25,14 +25,15 @@ from inception import inception_eval
 from inception.flowers_data import FlowersData
 
 
-tf.app.flags.DEFINE_string('data_dir', '/w266/project/mscoco/debug/',
+tf.app.flags.DEFINE_string('data_dir', '/home/subhashini.r/mscoco/output/',
                            'data directory')
 tf.app.flags.DEFINE_string('subset', 'validation', 'train or validation')
-tf.app.flags.DEFINE_string('eval_dir', '/w266/project/mscoco/debug/eval',
+tf.app.flags.DEFINE_string('eval_dir', '/home/subhashini.r/mscoco/eval',
                            'Eval directory')
-tf.app.flags.DEFINE_integer('num_examples', 100,
+#mscoco has 40,504 validation and 82,783 examples
+tf.app.flags.DEFINE_integer('num_examples', 40504,
                            'num examples')
-tf.app.flags.DEFINE_string('checkpoint_dir', '/w266/project/inception-v3-model/inception-v3',
+tf.app.flags.DEFINE_string('checkpoint_dir', '/home/subhashini.r/mscoco/inception_model/inception-v3',
                            'checkpoint directory')
 tf.app.flags.DEFINE_integer('input_queue_memory_factor', 1, '')
 tf.app.flags.DEFINE_integer('run_once', True, '')

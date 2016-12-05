@@ -195,9 +195,9 @@ def _eval_once(saver, summary_writer, net, images, labels, summary_op):
         print("labels shape:%s" % str(labels_val.shape))
         print("images shape:%s" % str(images_val.shape))
         #print("labels val type: %s, len: %s,element type:%s" % (type(labels_val), len(labels_val), type(labels_val[0])))
-        all_net_val.append(net_val)
-        all_labels_val.append(labels_val)
-        all_images_val.append(images_val)
+        #all_net_val.append(net_val)
+        #all_labels_val.append(labels_val)
+        #all_images_val.append(images_val)
         #print(net_val)
         #all_net_val.append(net_val)
         ##count_top_1 += np.sum(top_1)
@@ -220,6 +220,7 @@ def _eval_once(saver, summary_writer, net, images, labels, summary_op):
             (datetime.now(), precision_at_1, recall_at_5, total_sample_count))
       '''
       print("Finished!!!")
+      '''
       img_vectors =  np.vstack(all_net_val)
       print( img_vectors.shape)
       label_vectors = np.hstack(all_labels_val)
@@ -233,7 +234,7 @@ def _eval_once(saver, summary_writer, net, images, labels, summary_op):
       np.savetxt("image_vectors.txt", img_vectors)
       np.savetxt("image_filenames.txt", label_vectors, fmt="%s")
       img_buffers.tofile("images")
-
+      '''
       summary = tf.Summary()
       summary.ParseFromString(sess.run(summary_op))
       ##summary.value.add(tag='Precision @ 1', simple_value=precision_at_1)
