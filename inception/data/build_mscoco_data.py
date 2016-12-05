@@ -76,19 +76,19 @@ import threading
 import numpy as np
 import tensorflow as tf
 
-tf.app.flags.DEFINE_string('train_directory', '/w266/project/mscoco/debug/train',
+tf.app.flags.DEFINE_string('train_directory', '/home/subhashini.r/mscoco/images/train',
                            'Training data directory')
-tf.app.flags.DEFINE_string('validation_directory', '/w266/project/mscoco/debug/validation',
+tf.app.flags.DEFINE_string('validation_directory', '/home/subhashini.r/mscoco/images/validation',
                            'Validation data directory')
-tf.app.flags.DEFINE_string('output_directory', '/w266/project/mscoco/debug',
+tf.app.flags.DEFINE_string('output_directory', '/home/subhashini.r/mscoco/output',
                            'Output data directory')
 
-tf.app.flags.DEFINE_integer('train_shards', 2,
+tf.app.flags.DEFINE_integer('train_shards', 192,
                             'Number of shards in training TFRecord files.')
-tf.app.flags.DEFINE_integer('validation_shards', 2,
+tf.app.flags.DEFINE_integer('validation_shards', 96,
                             'Number of shards in validation TFRecord files.')
 
-tf.app.flags.DEFINE_integer('num_threads', 2,
+tf.app.flags.DEFINE_integer('num_threads', 8,
                             'Number of threads to preprocess the images.')
 
 # The labels file contains a list of valid labels are held in this file.
@@ -98,7 +98,7 @@ tf.app.flags.DEFINE_integer('num_threads', 2,
 #   flower
 # where each line corresponds to a label. We map each label contained in
 # the file to an integer corresponding to the line number starting from 0.
-tf.app.flags.DEFINE_string('labels_file', '/w266/project/mscoco/debug/labels.txt', 'Labels file')
+tf.app.flags.DEFINE_string('labels_file', '/home/subhashini.r/mscoco/images/labels.txt', 'Labels file')
 
 
 FLAGS = tf.app.flags.FLAGS
@@ -421,8 +421,8 @@ def main(unused_argv):
   print('Saving results to %s' % FLAGS.output_directory)
 
   # Run it!
-  _process_dataset('validation', FLAGS.validation_directory,
-                   FLAGS.validation_shards, FLAGS.labels_file)
+  #_process_dataset('validation', FLAGS.validation_directory,
+  #                 FLAGS.validation_shards, FLAGS.labels_file)
   _process_dataset('train', FLAGS.train_directory,
                    FLAGS.train_shards, FLAGS.labels_file)
 

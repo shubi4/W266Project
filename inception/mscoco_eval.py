@@ -25,10 +25,12 @@ from inception import inception_eval
 from inception.flowers_data import FlowersData
 
 
-tf.app.flags.DEFINE_string('data_dir', '/home/subhashini.r/mscoco/output/',
+tf.app.flags.DEFINE_string('data_dir', '/home/subhashini.r/mscoco/inception_inputs',
                            'data directory')
+tf.app.flags.DEFINE_string('output_dir', '/home/subhashini.r/mscoco/inception_image_vectors/validation',
+                           'output directory')
 tf.app.flags.DEFINE_string('subset', 'validation', 'train or validation')
-tf.app.flags.DEFINE_string('eval_dir', '/home/subhashini.r/mscoco/eval',
+tf.app.flags.DEFINE_string('eval_dir', '/home/subhashini.r/mscoco/inception_eval_dir/',
                            'Eval directory')
 #mscoco has 40,504 validation and 82,783 examples
 tf.app.flags.DEFINE_integer('num_examples', 40504,

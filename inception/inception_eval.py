@@ -182,9 +182,9 @@ def _eval_once(saver, summary_writer, net, images, labels, summary_op):
       total_sample_count = num_iter * FLAGS.batch_size
       step = 0
 
-      all_net_val = []
-      all_labels_val = []
-      all_images_val = []
+      #all_net_val = []
+      #all_labels_val = []
+      #all_images_val = []
       print('%s: starting evaluation on (%s).' % (datetime.now(), FLAGS.subset))
       start_time = time.time()
       while step < num_iter and not coord.should_stop():
@@ -195,6 +195,9 @@ def _eval_once(saver, summary_writer, net, images, labels, summary_op):
         print("labels shape:%s" % str(labels_val.shape))
         print("images shape:%s" % str(images_val.shape))
         #print("labels val type: %s, len: %s,element type:%s" % (type(labels_val), len(labels_val), type(labels_val[0])))
+        for i in range(len(labels_val)):
+          output_file = os.path.join(FLAGS.output_dir, labels_val[i])
+          np.savetxt(output_file, net_val[i])
         #all_net_val.append(net_val)
         #all_labels_val.append(labels_val)
         #all_images_val.append(images_val)
@@ -235,6 +238,7 @@ def _eval_once(saver, summary_writer, net, images, labels, summary_op):
       np.savetxt("image_filenames.txt", label_vectors, fmt="%s")
       img_buffers.tofile("images")
       '''
+
       summary = tf.Summary()
       summary.ParseFromString(sess.run(summary_op))
       ##summary.value.add(tag='Precision @ 1', simple_value=precision_at_1)
