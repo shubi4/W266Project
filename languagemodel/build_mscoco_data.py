@@ -197,7 +197,7 @@ def _to_sequence_example(image, vocab):
       encoded_image = f.read()
       tmp = np.frombuffer(encoded_image, dtype=np.float32)
       assert(tmp.shape == [2048,])
-  except (tf.errors.InvalidArgumentError, AssertionError):
+  except (tf.errors.InvalidArgumentError, AssertionError, IOError):
     print("Skipping file with invalid JPEG data: %s" % image.filename)
     return
 
