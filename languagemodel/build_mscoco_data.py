@@ -99,17 +99,17 @@ import nltk.tokenize
 import numpy as np
 import tensorflow as tf
 
-tf.flags.DEFINE_string("train_image_dir", "/w266/project/mscoco/debug/image_vectors/train",
+tf.flags.DEFINE_string("train_image_dir", "/home/subhashini.r/mscoco/inception_image_vectors/train",
                        "Training image directory.")
-tf.flags.DEFINE_string("val_image_dir", "/w266/project/mscoco/debug/image_vectors/validation",
+tf.flags.DEFINE_string("val_image_dir", "/home/subhashini.r/mscoco/inception_image_vectors/validation",
                        "Validation image directory.")
 
-tf.flags.DEFINE_string("train_captions_file", "/w266/project/mscoco/captions_train_val2014/annotations/captions_train2014.json",
+tf.flags.DEFINE_string("train_captions_file", "/home/subhashini.r/mscoco/annotations/captions_train2014.json",
                        "Training captions JSON file.")
-tf.flags.DEFINE_string("val_captions_file", "/w266/project/mscoco/captions_train_val2014/annotations/captions_val2014.json",
+tf.flags.DEFINE_string("val_captions_file", "/home/subhashini.r/mscoco/annotations/captions_val2014.json",
                        "Validation captions JSON file.")
 
-tf.flags.DEFINE_string("output_dir", "/w266/project/mscoco/debug/image_vectors_and_captions", "Output data directory.")
+tf.flags.DEFINE_string("output_dir", "/home/subhashini.r/mscoco/image_vectors_and_captions", "Output data directory.")
 
 tf.flags.DEFINE_integer("train_shards", 1,
                         "Number of shards in training TFRecord files.")
@@ -127,7 +127,7 @@ tf.flags.DEFINE_string("unknown_word", "<UNK>",
 tf.flags.DEFINE_integer("min_word_count", 4,
                         "The minimum number of occurrences of each word in the "
                         "training set for inclusion in the vocabulary.")
-tf.flags.DEFINE_string("word_counts_output_file", "/w266/project/mscoco/debug/word_counts.txt",
+tf.flags.DEFINE_string("word_counts_output_file", "/home/subhashini.r/mscoco/annotations/word_counts.txt",
                        "Output vocabulary file of word counts.")
 
 tf.flags.DEFINE_integer("num_threads", 1,
