@@ -20,8 +20,8 @@ def main(unused_argv):
     g = tf.Graph()
     with g.as_default():
         # Build the model.
-        model = LanguageModel()
-        model.BuildCoreGraph(TRAIN_FILES)
+        model = LanguageModel(mode="train")
+        model.BuildCoreGraph()
 
         # Set up the learning rate.
         learning_rate_decay_fn = None
