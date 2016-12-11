@@ -100,23 +100,6 @@ class ShowAndTellModel(object):
     """Returns true if the model is built for training mode."""
     return self.mode == "train"
 
-  def process_image(self, encoded_image, thread_id=0):
-    """Decodes and processes an image string.
-
-    Args:
-      encoded_image: A scalar string Tensor; the encoded image.
-      thread_id: Preprocessing thread id used to select the ordering of color
-        distortions.
-
-    Returns:
-      A float32 Tensor of shape [height, width, 3]; the processed image.
-    """
-    return image_processing.process_image(encoded_image,
-                                          is_training=self.is_training(),
-                                          height=self.config.image_height,
-                                          width=self.config.image_width,
-                                          thread_id=thread_id,
-                                          image_format=self.config.image_format)
 
   def build_inputs(self):
     """Input prefetching, preprocessing and batching.
@@ -195,14 +178,7 @@ class ShowAndTellModel(object):
     Outputs:
       self.image_embeddings
     """
-    """
-    inception_output = image_embedding.inception_v3(
-        self.images,
-        trainable=self.train_inception,
-        is_training=self.is_training())
-    self.inception_variables = tf.get_collection(
-        tf.GraphKeys.VARIABLES, scope="InceptionV3")
-    """
+
     # Map inception output into embedding space.
     with tf.variable_scope("image_embedding") as scope:
       image_embeddings = tf.contrib.layers.fully_connected(
