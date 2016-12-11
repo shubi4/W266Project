@@ -140,8 +140,8 @@ def main(unused_argv):
     g = tf.Graph()
     with g.as_default():
         # Build the model for evaluation.
-        model = LanguageModel()
-        model.BuildCoreGraph(VAL_FILES)
+        model = LanguageModel(mode="eval")
+        model.BuildCoreGraph()
 
         # Create the Saver to restore model Variables.
         saver = tf.train.Saver()
