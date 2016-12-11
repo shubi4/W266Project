@@ -26,16 +26,16 @@ from im2txt import show_and_tell_model
 
 FLAGS = tf.app.flags.FLAGS
 
-tf.flags.DEFINE_string("input_file_pattern", "/w266/project/mscoco/image_vectors_and_captions/train-?????-of-00256",
+tf.flags.DEFINE_string("input_file_pattern", "/home/subhashini.r/mscoco/image_vectors_and_captions/train-?????-of-00256",
                        "File pattern of sharded TFRecord input files.")
 #tf.flags.DEFINE_string("inception_checkpoint_file", "",
 #                       "Path to a pretrained inception_v3 model.")
-tf.flags.DEFINE_string("train_dir", "/w266/project/mscoco/model_checkpoints",
+tf.flags.DEFINE_string("train_dir", "/home/subhashini.r/mscoco/model_checkpoints",
                        "Directory for saving and loading model checkpoints.")
 #tf.flags.DEFINE_boolean("train_inception", False,
 #                        "Whether to train inception submodel variables.")
 tf.flags.DEFINE_integer("number_of_steps", 1000000, "Number of training steps.")
-tf.flags.DEFINE_integer("log_every_n_steps", 1,
+tf.flags.DEFINE_integer("log_every_n_steps", 100,
                         "Frequency at which loss and global step are logged.")
 
 tf.logging.set_verbosity(tf.logging.INFO)

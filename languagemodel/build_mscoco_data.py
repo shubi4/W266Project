@@ -111,11 +111,11 @@ tf.flags.DEFINE_string("val_captions_file", "/home/subhashini.r/mscoco/annotatio
 
 tf.flags.DEFINE_string("output_dir", "/home/subhashini.r/mscoco/image_vectors_and_captions", "Output data directory.")
 
-tf.flags.DEFINE_integer("train_shards", 1,
+tf.flags.DEFINE_integer("train_shards", 256,
                         "Number of shards in training TFRecord files.")
-tf.flags.DEFINE_integer("val_shards", 1,
+tf.flags.DEFINE_integer("val_shards", 4,
                         "Number of shards in validation TFRecord files.")
-tf.flags.DEFINE_integer("test_shards", 1,
+tf.flags.DEFINE_integer("test_shards", 8,
                         "Number of shards in testing TFRecord files.")
 
 tf.flags.DEFINE_string("start_word", "<S>",
@@ -130,7 +130,7 @@ tf.flags.DEFINE_integer("min_word_count", 4,
 tf.flags.DEFINE_string("word_counts_output_file", "/home/subhashini.r/mscoco/annotations/word_counts.txt",
                        "Output vocabulary file of word counts.")
 
-tf.flags.DEFINE_integer("num_threads", 1,
+tf.flags.DEFINE_integer("num_threads", 8,
                         "Number of threads to preprocess the images.")
 
 FLAGS = tf.flags.FLAGS

@@ -36,11 +36,11 @@ from im2txt import show_and_tell_model
 
 FLAGS = tf.flags.FLAGS
 
-tf.flags.DEFINE_string("input_file_pattern", "",
+tf.flags.DEFINE_string("input_file_pattern", "/home/subhashini.r/mscoco/image_vectors_and_captions/val-?????-of-00004",
                        "File pattern of sharded TFRecord input files.")
-tf.flags.DEFINE_string("checkpoint_dir", "",
+tf.flags.DEFINE_string("checkpoint_dir", "/home/subhashini.r/mscoco/model_checkpoints",
                        "Directory containing model checkpoints.")
-tf.flags.DEFINE_string("eval_dir", "", "Directory to write event logs.")
+tf.flags.DEFINE_string("eval_dir", "/home/subhashini.r/mscoco/model_eval", "Directory to write event logs.")
 
 tf.flags.DEFINE_integer("eval_interval_secs", 600,
                         "Interval between evaluation runs.")

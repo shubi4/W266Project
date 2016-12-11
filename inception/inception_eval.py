@@ -197,7 +197,7 @@ def _eval_once(saver, summary_writer, net, images, labels, summary_op):
         #print("labels val type: %s, len: %s,element type:%s" % (type(labels_val), len(labels_val), type(labels_val[0])))
         for i in range(len(labels_val)):
           output_file = os.path.join(FLAGS.output_dir, labels_val[i])
-          np.savetxt(output_file, net_val[i])
+          net_val[i].tofile(output_file)
         #all_net_val.append(net_val)
         #all_labels_val.append(labels_val)
         #all_images_val.append(images_val)
