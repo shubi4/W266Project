@@ -3,7 +3,7 @@ VAL_FILES = "/home/subhashini.r/mscoco/image_vectors_and_captions/val-?????-of-0
 TEST_FILES = "/home/subhashini.r/mscoco/image_vectors_and_captions/test-?????-of-00008"
 
 CHECKPOINT_DIR = "/home/subhashini.r/mscoco/rnn_model_checkpoint"
-MAX_CHECKPOINTS_TO_KEEP=5
+MAX_CHECKPOINTS_TO_KEEP=50
 
 EVAL_DIR="/home/subhashini.r/mscoco/rnn_model_eval"
 EVAL_INTERVAL_SECS=600 # "Interval between evaluation runs."

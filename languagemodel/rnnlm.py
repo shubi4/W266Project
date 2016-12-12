@@ -128,7 +128,7 @@ class LanguageModel(object):
             self.mask = None
         else:
             self.image_vectors_, self.input_seq_, self.target_seq_, self.mask_ = \
-                inputs(TRAIN_FILES if mode=="train" else VAL_FILES, num_epochs=None)
+                inputs(TRAIN_FILES if self._mode=="train" else VAL_FILES, num_epochs=None)
 
         with tf.name_scope("image_embedding"):
             # image embedding layer
