@@ -102,6 +102,7 @@ class LanguageModel(object):
         # lstm config
         self.num_layers = num_lstm_layers
         self.lstm_dropout_keep_prob = 0.7
+        # TODO move these to config.py
         self.clip_gradients = 5.0
         #training config
         self.initial_learning_rate = 2.0
@@ -115,17 +116,19 @@ class LanguageModel(object):
     def BuildCoreGraph(self):
         if self._mode == "inference":
             # In inference mode, a single image vector and the start token are fed in
-            image_feed = tf.placeholder(dtype=tf.string, shape=[None], name="image_feed") #image vector
-            input_wordid = tf.placeholder(dtype=tf.int64, shape=[None], name="input_feed")
+            self.image_feed_ = tf.placeholder(dtype=tf.float32, shape=[None], name="image_feed") #image vector
+            self.input_wordid_ = tf.placeholder(dtype=tf.int64, shape=[None], name="input_feed")
+
             # Process image and insert batch dimensions.
-            image_vector = tf.decode_raw(image_feed, tf.float32)
-            image_vector.set_shape([1,IMAGE_VECTOR_SIZE])
-            self.image_vectors_ = image_vector
+            #image_vector_ = tf.decode_raw(self.image_feed_, tf.float32)
+            #image_vector_.set_shape([1,IMAGE_VECTOR_SIZE])
+            #self.image_vectors_ = image_vector_
+            self.image_vectors_ = tf.reshape(self.image_feed_, [1, IMAGE_VECTOR_SIZE])
             #insert batch dims as shape[0] into wordid
-            self.input_seq_ = tf.expand_dims(input_wordid, 0)
+            self.input_seq_ = tf.expand_dims(self.input_wordid_, 0)
             # No target sequences or input mask in inference mode.
-            self.target_seqs_ = None
-            self.mask = None
+            self.target_seq_ = tf.expand_dims(self.input_wordid_, 0)
+            self.mask_ = tf.constant([1], shape=[1,1])
         else:
             self.image_vectors_, self.input_seq_, self.target_seq_, self.mask_ = \
                 inputs(TRAIN_FILES if self._mode=="train" else VAL_FILES, num_epochs=None)
@@ -148,6 +151,7 @@ class LanguageModel(object):
 
         cell = MakeFancyRNNCell(HIDDEN_UNITS, self._mode == "train", self.lstm_dropout_keep_prob, self.num_layers)
         with tf.variable_scope("lstm", initializer=self.initializer) as lstm_scope:
+
             batch_size_ = self.image_vectors_.get_shape()[0]
             zero_state = cell.zero_state(batch_size_, tf.float32)
 
@@ -158,11 +162,13 @@ class LanguageModel(object):
             lstm_scope.reuse_variables()
 
             sequence_length = tf.reduce_sum(self.mask_, 1)
+            #final state is not needed for training. Next batch will start with new initial_h_ as above.
+            # during inference time, it is used to generate a caption word-by-word
             self.outputs_, self.final_h_ = tf.nn.dynamic_rnn(cell=cell,
-                                                             inputs=self.input_seq_embedding_,
-                                                             sequence_length=sequence_length,
-                                                             initial_state=self.initial_h_,
-                                                             scope = lstm_scope)
+                                                 inputs=self.input_seq_embedding_,
+                                                 sequence_length=sequence_length,
+                                                 initial_state=self.initial_h_,
+                                                 scope = lstm_scope)
         with tf.variable_scope("logits"):
 
             self.softmax_w_ = tf.get_variable("softmax_w", shape=[HIDDEN_UNITS, VOCAB_SIZE],
@@ -195,4 +201,14 @@ class LanguageModel(object):
 
         print("Built model")
 
+
+    def BuildSamplerGraph(self):
+        """Construct the sampling ops.
+        pred_samples_ is a Tensor of integer indices for
+        sampled predictions for each batch element, at each timestep.
+        """
+        # return a Tensor of shape [batch_size, max_time, 1]
+        #self.pred_samples_ = tf.multinomial(tf.reshape(self.logits_, [1, VOCAB_SIZE]), num_samples=1)
+        self.pred_samples_ = tf.argmax(tf.reshape(self.logits_, [VOCAB_SIZE]),  tf.constant(0))
+        self.pred_samples_ = tf.reshape(self.pred_samples_, [1])
 
