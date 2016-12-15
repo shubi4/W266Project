@@ -24,7 +24,7 @@ def ExtractData(file_pattern, output_file):
 
     images_to_captions = defaultdict(lambda: [])
     with tf.Session() as sess:
-        for file in data_files[:1]:
+        for file in data_files:
             print("processing file %s" %file)
             for i, record in enumerate(tf.python_io.tf_record_iterator(file)):
                 context, sequence = tf.parse_single_sequence_example(
@@ -34,7 +34,6 @@ def ExtractData(file_pattern, output_file):
                     sequence_features={"image/caption_ids": tf.FixedLenSequenceFeature([], dtype=tf.int64),
                                        "image/caption": tf.FixedLenSequenceFeature([],dtype = tf.string)}
                 )
-                caption_ids = sequence["image/caption_ids"]
                 caption = sequence["image/caption"]
                 image_id = context["image/image_id"]
                 caption = sess.run(caption)
