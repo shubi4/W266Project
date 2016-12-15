@@ -94,13 +94,14 @@ def run_once(model, saver, summary_writer, summary_op):
       summary_writer: Instance of SummaryWriter.
       summary_op: Op for generating model summaries.
     """
-    model_path = tf.train.latest_checkpoint(CHECKPOINT_DIR)
-    if not model_path:
-        tf.logging.info("Skipping evaluation. No checkpoint found in: %s", CHECKPOINT_DIR)
-        return
+    #model_path = tf.train.latest_checkpoint(CHECKPOINT_DIR)
+    #if not model_path:
+    #    tf.logging.info("Skipping evaluation. No checkpoint found in: %s", CHECKPOINT_DIR)
+    #    return
 
     with tf.Session() as sess:
         # Load model from checkpoint.
+        model_path = CHECKPOINT_FILE
         tf.logging.info("Loading model from checkpoint: %s", model_path)
         saver.restore(sess, model_path)
         global_step = tf.train.global_step(sess, model.global_step_.name)

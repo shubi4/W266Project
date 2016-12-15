@@ -8,22 +8,24 @@ import time
 import sys
 import numpy as np
 import tensorflow as tf
+import json
 
 from config import *
 from rnnlm import LanguageModel
 from vocabulary import Vocabulary
-
+from collections import defaultdict
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
-
-def inference_on_dataset(file_pattern):
+def ExtractTestData(file_pattern, output_file):
     data_files = []
     for pattern in file_pattern.split(","):
         data_files.extend(tf.gfile.Glob(pattern))
 
+    images_to_captions = defaultdict(lambda: [])
     with tf.Session() as sess:
-        for file in data_files:
+        for file in data_files[:1]:
+            print("processing file %s" %file)
             for i, record in enumerate(tf.python_io.tf_record_iterator(file)):
                 context, sequence = tf.parse_single_sequence_example(
                     record,
@@ -34,32 +36,32 @@ def inference_on_dataset(file_pattern):
                 )
                 caption_ids = sequence["image/caption_ids"]
                 caption = sequence["image/caption"]
-                image_vector = tf.decode_raw(context["image/data"], tf.float32)
-                image_vector.set_shape([IMAGE_VECTOR_SIZE, ])
                 image_id = context["image/image_id"]
-
-                #print("Caption Ids: ", sess.run(caption_ids))
-                print("Caption: ", sess.run(caption))
-                #print("Image vector (%d): " %len(sess.run(image_vector)))
+                caption = sess.run(caption)
                 id = sess.run(image_id)
                 image_filename = "COCO_val2014_%012d.jpg" %id
-                print("Image Filename: ", image_filename)
-                InferenceOnSingleFile(image_filename)
-                if i > 20:
-                    return
+                images_to_captions[image_filename].append(" ".join(caption))
+        print("writing data to file")
+        with open(output_file, 'w') as f:
+            json.dump(images_to_captions, f)
 
 
-def InferenceOnSingleFile(filename):
+def DoInference(input_file, output_file):
+    with open(input_file, 'r') as f:
+        images_and_captions = json.load(f)
 
-    #assert len(sys.argv) >= 2
-    #vector_filename = os.path.join(INFERENCE_VECTOR_FILES_DIR, sys.argv[1])
+
+    image_predictions = defaultdict(lambda: [])
+    vocab = Vocabulary(VOCAB_FILE)
+
+
     vector_filename = os.path.join(INFERENCE_VECTOR_FILES_DIR, filename)
     #image_filename = os.path.join(INFERENCE_IMAGE_FILES_DIR, sys.argv[1])
     image_vector = np.fromfile(vector_filename, dtype=np.float32)
     print(image_vector.shape)
     assert image_vector.shape == (2048,)
 
-    vocab = Vocabulary(VOCAB_FILE)
+
 
     model_path = tf.train.latest_checkpoint(CHECKPOINT_DIR)
     if not model_path:
@@ -102,7 +104,8 @@ def InferenceOnSingleFile(filename):
             print()
 
 def main(unused_argv):
-    inference_on_dataset(TEST_FILES)
+    if not os.path.isfile(PROCESSED_TEST_FILE):
+        ExtractData(TEST_FILES, PROCESSED_TEST_FILE)
 
 
 if __name__ == "__main__":
