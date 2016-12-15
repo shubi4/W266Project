@@ -4,6 +4,7 @@ TRAIN_FILES = BASE_PATH + "mscoco/image_vectors_and_captions/train-?????-of-0025
 VAL_FILES = BASE_PATH + "mscoco/image_vectors_and_captions/val-?????-of-00004"
 TEST_FILES = BASE_PATH + "mscoco/image_vectors_and_captions/test-?????-of-00008"
 PROCESSED_TEST_FILE= BASE_PATH + "mscoco/predictions/test_data.json"
+PREDICTIONS_FILE= BASE_PATH + "mscoco/predictions/test_data_predictions.json"
 
 #folder to pick up checkpoint for re-training
 CHECKPOINT_DIR = BASE_PATH + "mscoco/rnn_model_checkpoint"

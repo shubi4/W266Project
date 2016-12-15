@@ -22,11 +22,12 @@ def ExtractData(file_pattern, output_file):
     for pattern in file_pattern.split(","):
         data_files.extend(tf.gfile.Glob(pattern))
 
+    totalcount = 0
     images_to_captions = defaultdict(lambda: [])
     with tf.Session() as sess:
-        for file in data_files:
+        for file in data_files[:1]:
             print("processing file %s" %file)
-            for i, record in enumerate(tf.python_io.tf_record_iterator(file)):
+            for record in tf.python_io.tf_record_iterator(file):
                 context, sequence = tf.parse_single_sequence_example(
                     record,
                     context_features={"image/data": tf.FixedLenFeature([], dtype=tf.string),
@@ -40,8 +41,11 @@ def ExtractData(file_pattern, output_file):
                 id = sess.run(image_id)
                 image_filename = "COCO_val2014_%012d.jpg" %id
                 images_to_captions[image_filename].append(list(caption))
-                print(images_to_captions[image_filename])
+                totalcount += 1
+                if totalcount %100 == 0:
+                    print("Processed %d captions" %totalcount)
         print("writing data to file")
+        print("Number of unique image filenames: %d" %len(images_to_captions.keys()))
         with open(output_file, 'w') as f:
             json.dump(images_to_captions, f)
 
@@ -70,7 +74,8 @@ def DoInference(input_file, output_file):
         global_step = tf.train.global_step(sess, model.global_step_.name)
         tf.logging.info("Successfully loaded %s at global step = %d.", os.path.basename(model_path), global_step)
 
-        for imagefile, captions in ground_truth:
+        total_bleu_score = 0.0
+        for imagefile, captions in ground_truth.items():
             vector_filename = os.path.join(INFERENCE_VECTOR_FILES_DIR, imagefile)
             image_vector = np.fromfile(vector_filename, dtype=np.float32)
             #print(image_vector.shape)
@@ -91,17 +96,15 @@ def DoInference(input_file, output_file):
             predicted_caption = [vocab.id_to_word(word_id) for word_id in captionids]
             predictions[imagefile].append(" ".join(predicted_caption))
 
-            for ref in ground_truth[imagefile]:
-                ref = ref.split(" ")
-            # there may be several references
-            #BLEUscore = nltk.translate.bleu_score.sentence_bleu([reference], hypothesis)
-            #print
-            #BLEUscore
+            bleu_score = nltk.translate.bleu_score.sentence_bleu(ground_truth[imagefile], predicted_caption)
+            total_bleu_score += bleu_score
+            print(bleu_score)
+            bleu_scores.append
             #print(caption)
-            print("Predicted caption: "),
-            print(" ".join(vocab.id_to_word(word_id) for word_id in caption))
-            print()
-            print()
+            #print("Predicted caption: "),
+            #print(" ".join(vocab.id_to_word(word_id) for word_id in caption))
+            #print()
+            #print()
 
 def main(unused_argv):
     if not os.path.isfile(PROCESSED_TEST_FILE):
