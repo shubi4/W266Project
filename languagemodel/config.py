@@ -4,12 +4,13 @@ TRAIN_FILES = BASE_PATH + "mscoco/image_vectors_and_captions/train-?????-of-0025
 VAL_FILES = BASE_PATH + "mscoco/image_vectors_and_captions/val-?????-of-00004"
 TEST_FILES = BASE_PATH + "mscoco/image_vectors_and_captions/test-?????-of-00008"
 PROCESSED_TEST_FILE= BASE_PATH + "mscoco/predictions/test_data.json"
-PREDICTIONS_FILE= BASE_PATH + "mscoco/predictions/test_data_predictions.json"
+PREDICTIONS_FILE= BASE_PATH + "mscoco/predictions/test_data_predictions_70868.json"
 
 #folder to pick up checkpoint for re-training
 CHECKPOINT_DIR = BASE_PATH + "mscoco/rnn_model_checkpoint"
 #checkpoint file to pick up for evaluation and inference
-CHECKPOINT_FILE = BASE_PATH + "mscoco/rnn_model_checkpoints/model.ckpt-171230"
+#CHECKPOINT_FILE = BASE_PATH + "mscoco/rnn_model_checkpoints/model.ckpt-171230"
+CHECKPOINT_FILE = BASE_PATH + "mscoco/rnn_model_checkpoints/model.ckpt-70868"
 MAX_CHECKPOINTS_TO_KEEP=200
 
 EVAL_DIR= BASE_PATH + "mscoco/rnn_model_eval"
